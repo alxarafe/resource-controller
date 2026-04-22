@@ -1,0 +1,40 @@
+{
+  "name": "alxarafe/resource-controller",
+  "description": "ORM-agnostic declarative CRUD controller for PHP. Auto-generates list/edit UIs from field metadata.",
+  "type": "library",
+  "license": "GPL-3.0-or-later",
+  "keywords": ["crud", "admin", "resource", "controller", "scaffolding", "erp", "orm-agnostic"],
+  "authors": [
+    {
+      "name": "Rafael San José",
+      "email": "rsanjose@alxarafe.com",
+      "homepage": "https://alxarafe.com",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "php": "^8.2"
+  },
+  "suggest": {
+    "alxarafe/resource-eloquent": "Eloquent ORM adapter for RepositoryContract",
+    "illuminate/view": "For Blade template rendering",
+    "symfony/translation": "For the default TranslatorAdapter"
+  },
+  "autoload": {
+    "psr-4": {
+      "Alxarafe\\ResourceController\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Alxarafe\\ResourceController\\Tests\\": "tests/"
+    }
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^10.5"
+  },
+  "minimum-stability": "stable",
+  "config": {
+    "sort-packages": true
+  }
+}
