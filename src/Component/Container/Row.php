@@ -9,4 +9,9 @@ class Row extends AbstractContainer
         parent::__construct('row', '', $fields, $options);
     }
     public function getContainerType(): string { return 'row'; }
+
+    public function getColClass(): string
+    {
+        return $this->options['col'] ?? 'col-12';
+    }
 }

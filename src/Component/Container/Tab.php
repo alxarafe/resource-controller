@@ -36,6 +36,21 @@ class Tab extends AbstractContainer
         return $this->badgeCount;
     }
 
+    public function getUrl(): string
+    {
+        return $this->options['url'] ?? '';
+    }
+
+    public function getIcon(): string
+    {
+        return $this->options['icon'] ?? '';
+    }
+
+    public function getBadgeClass(): string
+    {
+        return $this->options['badge_class'] ?? 'badge bg-danger ms-2';
+    }
+
     #[\Override]
     public function jsonSerialize(): array
     {

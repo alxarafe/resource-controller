@@ -9,4 +9,9 @@ class Separator extends AbstractContainer
         parent::__construct('separator', $label, []);
     }
     public function getContainerType(): string { return 'separator'; }
+
+    public function getColClass(): string
+    {
+        return $this->options['col'] ?? 'col-12';
+    }
 }

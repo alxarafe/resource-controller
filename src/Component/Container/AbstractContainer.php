@@ -52,6 +52,11 @@ abstract class AbstractContainer implements JsonSerializable
         return $this->options;
     }
 
+    public function getColClass(): string
+    {
+        return $this->options['col'] ?? 'col-12';
+    }
+
     /**
      * Filter children using a callback.
      *
