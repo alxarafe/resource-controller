@@ -11,9 +11,9 @@ class Tab extends AbstractContainer
 {
     private ?int $badgeCount = null;
 
-    public function __construct(string $id, string $label, string $icon = '', array $fields = [])
+    public function __construct(string $id, string $label, string $icon = '', array $fields = [], array $options = [])
     {
-        parent::__construct('tab_' . $id, $label, $fields, ['icon' => $icon]);
+        parent::__construct("tab_$id", $label, $fields, [...$options, 'icon' => $icon]);
     }
 
     public function getContainerType(): string
