@@ -6,52 +6,52 @@
 ![Static Analysis](https://img.shields.io/badge/static%20analysis-PHPStan%20%2B%20Psalm-blue?style=flat-square)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/alxarafe/resource-controller/issues)
 
-**ORM-agnostic declarative CRUD controller for PHP.**
+**Controlador CRUD declarativo y agnóstico de ORM para PHP.**
 
-Auto-generates list views, edit forms, filters, and actions from field metadata — without coupling to any specific ORM, template engine, or framework.
+Genera automáticamente vistas de lista, formularios de edición, filtros y acciones a partir de metadatos de campos — sin acoplamiento a ningún ORM, motor de plantillas o framework específico.
 
-## Features
+## Características
 
-- 🏗️ **Declarative**: Define fields and columns, get full CRUD automatically
-- 🔌 **ORM-Agnostic**: Works with Eloquent, Doctrine, PDO, REST APIs, or any data source
-- 🎨 **UI Components**: 15 field types, panels, tabs, filters — all serializable to JSON
-- 🪝 **Hook System**: Extensible lifecycle (before/after save, form field injection)
-- 🌍 **i18n Ready**: Pluggable translator contract
-- 📦 **Zero Dependencies**: Only requires PHP 8.2
+- 🏗️ **Declarativo**: Define campos y columnas, obtén un CRUD completo automáticamente
+- 🔌 **Agnóstico de ORM**: Funciona con Eloquent, Doctrine, PDO, APIs REST o cualquier fuente de datos
+- 🎨 **Componentes UI**: 15 tipos de campo, paneles, pestañas, filtros — todo serializable a JSON
+- 🪝 **Sistema de Hooks**: Ciclo de vida extensible (antes/después de guardar, inyección de campos)
+- 🌍 **i18n**: Contrato de traducción conectable
+- 📦 **Sin dependencias**: Solo requiere PHP 8.2
 
-## Ecosystem
+## Ecosistema
 
-This package is the core of the Alxarafe Resource ecosystem. Use it with the adapters that fit your stack:
+Este paquete es el núcleo del ecosistema Alxarafe Resource. Úsalo con los adaptadores que se ajusten a tu stack:
 
-| Package | Purpose | Status |
+| Paquete | Propósito | Estado |
 |---|---|---|
-| **[resource-controller](https://github.com/alxarafe/resource-controller)** | Core CRUD engine + UI components | ✅ Stable |
-| **[resource-eloquent](https://github.com/alxarafe/resource-eloquent)** | Eloquent ORM adapter (Repository, Query, Transaction) | ✅ Stable |
-| **[resource-blade](https://github.com/alxarafe/resource-blade)** | Blade template renderer adapter | 🚧 Coming soon |
-| **[resource-twig](https://github.com/alxarafe/resource-twig)** | Twig template renderer adapter | 🚧 Coming soon |
+| **[resource-controller](https://github.com/alxarafe/resource-controller)** | Motor CRUD central + componentes UI | ✅ Estable |
+| **[resource-eloquent](https://github.com/alxarafe/resource-eloquent)** | Adaptador ORM Eloquent (Repository, Query, Transaction) | ✅ Estable |
+| **[resource-blade](https://github.com/alxarafe/resource-blade)** | Adaptador de renderizado con Blade | 🚧 Próximamente |
+| **[resource-twig](https://github.com/alxarafe/resource-twig)** | Adaptador de renderizado con Twig | 🚧 Próximamente |
 
-## Installation
+## Instalación
 
 ```bash
 composer require alxarafe/resource-controller
 ```
 
-For Eloquent support:
+Para soporte con Eloquent:
 ```bash
 composer require alxarafe/resource-eloquent
 ```
 
-For Blade rendering:
+Para renderizado con Blade:
 ```bash
 composer require alxarafe/resource-blade
 ```
 
-For Twig rendering:
+Para renderizado con Twig:
 ```bash
 composer require alxarafe/resource-twig
 ```
 
-## Quick Start
+## Inicio rápido
 
 ```php
 use Alxarafe\ResourceController\AbstractResourceController;
@@ -71,15 +71,15 @@ class ProductController extends AbstractResourceController
 
     protected function getRepository(string $tabId = 'default'): RepositoryContract
     {
-        return new EloquentRepository(Product::class); // or any adapter
+        return new EloquentRepository(Product::class); // o cualquier adaptador
     }
 
     protected function getListColumns(): array
     {
         return [
-            new Text('name', 'Name'),
-            new Decimal('price', 'Price', ['min' => 0]),
-            new Boolean('active', 'Active'),
+            new Text('name', 'Nombre'),
+            new Decimal('price', 'Precio', ['min' => 0]),
+            new Boolean('active', 'Activo'),
         ];
     }
 
@@ -89,9 +89,9 @@ class ProductController extends AbstractResourceController
             'general' => [
                 'label' => 'General',
                 'fields' => [
-                    new Text('name', 'Name', ['required' => true]),
-                    new Decimal('price', 'Price'),
-                    new Boolean('active', 'Active'),
+                    new Text('name', 'Nombre', ['required' => true]),
+                    new Decimal('price', 'Precio'),
+                    new Boolean('active', 'Activo'),
                 ],
             ],
         ];
@@ -99,47 +99,47 @@ class ProductController extends AbstractResourceController
 }
 ```
 
-## Architecture
+## Arquitectura
 
 ```
 ┌──────────────────────────────────────────────┐
-│         Your Controller                       │
+│         Tu Controlador                        │
 │  getRepository() → RepositoryContract         │
 │  getListColumns() → Field[]                   │
 │  getEditFields()  → Field[]                   │
 ├──────────────────────────────────────────────┤
-│         ResourceTrait (this package)          │
+│         ResourceTrait (este paquete)          │
 │  buildConfiguration()                         │
 │  handleRequest()                              │
 │  fetchListData() / saveRecord()               │
 ├──────────────────────────────────────────────┤
-│         Contracts                             │
+│         Contratos                             │
 │  RepositoryContract  TranslatorContract       │
 │  QueryContract       MessageBagContract       │
 │  TransactionContract HookContract             │
 │  RendererContract                             │
 └──────────────────────────────────────────────┘
-         ↓ implemented by ↓
+         ↓ implementado por ↓
 ┌──────────────┐ ┌──────────────┐ ┌────────────┐
 │ Eloquent     │ │ Blade        │ │ Twig       │
 │ Adapter      │ │ Adapter      │ │ Adapter    │
 └──────────────┘ └──────────────┘ └────────────┘
 ```
 
-## Contracts
+## Contratos
 
-| Contract | Purpose | Null Default |
+| Contrato | Propósito | Valor por defecto |
 |---|---|---|
-| `RepositoryContract` | Data access (CRUD + query) | — (must implement) |
-| `QueryContract` | Fluent query builder | — (from Repository) |
-| `TransactionContract` | DB transactions | `NullTransaction` |
-| `TranslatorContract` | i18n / translations | `NullTranslator` |
-| `MessageBagContract` | Flash messages | `NullMessageBag` |
-| `HookContract` | Plugin extensibility | `NullHookService` |
-| `RendererContract` | Template rendering | — (optional) |
-| `RelationContract` | Parent-child sync | — (optional) |
+| `RepositoryContract` | Acceso a datos (CRUD + consultas) | — (obligatorio) |
+| `QueryContract` | Constructor de consultas fluido | — (del Repository) |
+| `TransactionContract` | Transacciones de BD | `NullTransaction` |
+| `TranslatorContract` | i18n / traducciones | `NullTranslator` |
+| `MessageBagContract` | Mensajes flash | `NullMessageBag` |
+| `HookContract` | Extensibilidad mediante plugins | `NullHookService` |
+| `RendererContract` | Renderizado de plantillas | — (opcional) |
+| `RelationContract` | Sincronización padre-hijo | — (opcional) |
 
-## Development
+## Desarrollo
 
 ### Docker
 
@@ -148,20 +148,20 @@ docker compose up -d
 docker exec alxarafe-resources composer install
 ```
 
-### Running the CI pipeline locally
+### Ejecutar el pipeline CI en local
 
 ```bash
 bash bin/ci_local.sh
 ```
 
-This runs, in order: PHPCBF → PHPCS → PHPStan → Psalm → PHPUnit.
+Ejecuta en orden: PHPCBF → PHPCS → PHPStan → Psalm → PHPUnit.
 
-### Running tests only
+### Ejecutar solo los tests
 
 ```bash
 bash bin/run_tests.sh
 ```
 
-## License
+## Licencia
 
 GPL-3.0-or-later
