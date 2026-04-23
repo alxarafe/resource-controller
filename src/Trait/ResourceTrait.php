@@ -667,12 +667,16 @@ trait ResourceTrait
             'body'     => null,
         ];
 
-        foreach ($this->structConfig['edit']['head_buttons'] ?? [] as $btn) {
+        $buttonsConfig = ($this->mode === ResourceInterface::MODE_LIST)
+            ? ($this->structConfig['list']['head_buttons'] ?? [])
+            : ($this->structConfig['edit']['head_buttons'] ?? []);
+
+        foreach ($buttonsConfig as $btn) {
             $label = $btn['label'] ?? '';
             $icon = $btn['icon'] ?? '';
             $type = $btn['type'] ?? 'secondary';
 
-            if (($btn['name'] ?? '') === 'save') {
+            if ($this->mode === ResourceInterface::MODE_EDIT && ($btn['name'] ?? '') === 'save') {
                 if (empty($this->recordId) || $this->recordId === 'new') {
                     $label = $t->translate('create');
                     $icon = 'fas fa-plus';
