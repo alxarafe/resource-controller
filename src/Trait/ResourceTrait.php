@@ -86,11 +86,26 @@ trait ResourceTrait
 
     // ── Abstract: Resource Definition ─────────────────────────────
 
-    protected function getListColumns(): array { return []; }
-    protected function getEditFields(): array { return []; }
-    protected function getFilters(): array { return []; }
-    protected function getTabVisibility(): array { return []; }
-    protected function getTabBadges(): array { return []; }
+    protected function getListColumns(): array
+    {
+ return []; 
+}
+    protected function getEditFields(): array
+    {
+ return []; 
+}
+    protected function getFilters(): array
+    {
+ return []; 
+}
+    protected function getTabVisibility(): array
+    {
+ return []; 
+}
+    protected function getTabBadges(): array
+    {
+ return []; 
+}
 
     protected function getTabs(): array
     {
@@ -165,10 +180,18 @@ trait ResourceTrait
 
     // ── Lifecycle Hooks ───────────────────────────────────────────
 
-    protected function beforeConfig(): void {}
-    protected function beforeList(): void {}
-    protected function beforeEdit(): void {}
-    protected function afterSaveRecord(array $savedRecord, array $submittedData): void {}
+    protected function beforeConfig(): void
+    {
+}
+    protected function beforeList(): void
+    {
+}
+    protected function beforeEdit(): void
+    {
+}
+    protected function afterSaveRecord(array $savedRecord, array $submittedData): void
+    {
+}
 
     // ── Setup (default buttons) ───────────────────────────────────
 
@@ -176,7 +199,8 @@ trait ResourceTrait
     {
         $t = $this->getTranslator();
 
-        $this->addListButton('new', $t->translate('new'), 'fas fa-plus', 'primary', 'right', 'url',
+        $this->addListButton(
+            'new', $t->translate('new'), 'fas fa-plus', 'primary', 'right', 'url',
             'index.php?module=' . static::getModuleName() . '&controller=' . static::getControllerName() . '&id=new');
 
         $this->addEditButton('save', $t->translate('save_changes'), 'fas fa-save', 'primary', 'right', 'submit');
@@ -204,8 +228,10 @@ trait ResourceTrait
                 $this->jsonResponse($this->fetchRecordData());
                 return;
             }
-            if ((isset($_POST['action']) && $_POST['action'] === 'save') ||
-                (isset($_GET['ajax']) && $_GET['ajax'] === 'save_record')) {
+            if (
+                (isset($_POST['action']) && $_POST['action'] === 'save') ||
+                (isset($_GET['ajax']) && $_GET['ajax'] === 'save_record')
+            ) {
                 $this->saveRecord();
             }
         }
@@ -367,6 +393,7 @@ trait ResourceTrait
             $hooks->execute('before_save.' . static::getControllerName(), $modelData);
 
             $id = ($this->recordId && $this->recordId !== 'new') ? $this->recordId : null;
+            /** @var array<string, mixed> $modelData */
             $savedRecord = $repo->save($id, $modelData);
 
             // Save relations if handler available
@@ -607,15 +634,15 @@ trait ResourceTrait
     protected function setEditFields(array $fields, string $sectionId = 'main'): void
     {
         foreach ($fields as $key => $value) {
-            if ($value instanceof AbstractField) {
-                if ($value instanceof Panel) {
-                    $panelId = $value->getField();
-                    if (!isset($this->structConfig['edit']['sections'][$panelId])) {
-                        $this->addEditSection($panelId, $value->getLabel());
-                    }
-                    $this->setEditFields($value->getFields(), $panelId);
-                    continue;
+            if ($value instanceof Panel) {
+                $panelId = $value->getField();
+                if (!isset($this->structConfig['edit']['sections'][$panelId])) {
+                    $this->addEditSection($panelId, $value->getLabel());
                 }
+                $this->setEditFields($value->getFields(), $panelId);
+                continue;
+            }
+            if ($value instanceof AbstractField) {
                 $this->addEditField($sectionId, $value);
                 continue;
             }
@@ -686,8 +713,14 @@ trait ResourceTrait
         return $descriptor;
     }
 
-    public function getActiveTab(): string { return $this->activeTab; }
-    public function getFields(string $mode = 'edit'): array { return $this->structConfig[$mode]['sections'] ?? []; }
+    public function getActiveTab(): string
+    {
+ return $this->activeTab; 
+}
+    public function getFields(string $mode = 'edit'): array
+    {
+ return $this->structConfig[$mode]['sections'] ?? []; 
+}
 
     // ── Internal Helpers ──────────────────────────────────────────
 

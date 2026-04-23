@@ -1,6 +1,9 @@
 <?php
+
 declare(strict_types=1);
+
 namespace Alxarafe\ResourceController\Component\Fields;
+
 use Alxarafe\ResourceController\Component\AbstractField;
 
 class Image extends AbstractField
@@ -14,5 +17,8 @@ class Image extends AbstractField
         parent::__construct(uniqid('img_'), $label, $options);
     }
     
-    public function getType(): string { return 'image'; }
+    public function getType(): string
+    {
+ return 'image'; 
+}
 }

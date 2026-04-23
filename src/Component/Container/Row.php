@@ -1,5 +1,7 @@
 <?php
+
 declare(strict_types=1);
+
 namespace Alxarafe\ResourceController\Component\Container;
 
 class Row extends AbstractContainer
@@ -8,7 +10,10 @@ class Row extends AbstractContainer
     {
         parent::__construct('row', '', $fields, $options);
     }
-    public function getContainerType(): string { return 'row'; }
+    public function getContainerType(): string
+    {
+ return 'row'; 
+}
 
     public function getColClass(): string
     {

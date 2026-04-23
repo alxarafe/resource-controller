@@ -1,5 +1,7 @@
 <?php
+
 declare(strict_types=1);
+
 namespace Alxarafe\ResourceController\Component\Container;
 
 class Separator extends AbstractContainer
@@ -8,7 +10,10 @@ class Separator extends AbstractContainer
     {
         parent::__construct('separator', $label, []);
     }
-    public function getContainerType(): string { return 'separator'; }
+    public function getContainerType(): string
+    {
+ return 'separator'; 
+}
 
     public function getColClass(): string
     {
