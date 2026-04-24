@@ -838,60 +838,48 @@ export class AlxarafeResource {
                 html = html.split('{{checked}}').join('');
             }
 
+            // Specific Check for Select
+            if (lowerType === 'select' || lowerType === 'select2') {
+                const options = field.options?.values || {};
+                let optionsHtml = '<option value="">-- Seleccionar --</option>';
+                const safeValue = value !== null && value !== undefined ? value : '';
+
+                if (Array.isArray(options)) {
+                    options.forEach((opt: any) => {
+                        const val = typeof opt === 'object' ? opt.id : opt;
+                        const lab = typeof opt === 'object' ? (opt.name || opt.label) : opt;
+                        const selected = String(val) === String(safeValue) ? 'selected' : '';
+                        optionsHtml += `<option value="${val}" ${selected}>${lab}</option>`;
+                    });
+                } else {
+                    Object.entries(options).forEach(([k, v]) => {
+                        const selected = String(k) === String(safeValue) ? 'selected' : '';
+                        optionsHtml += `<option value="${k}" ${selected}>${v}</option>`;
+                    });
+                }
+
+                const selectId = `select-${field.field}-${Math.random().toString(36).substr(2, 9)}`;
+                html = html.split('{{optionsHtml}}').join(optionsHtml);
+                html = html.split('{{selectId}}').join(selectId);
+
+                // Post-render init hook for Select2
+                setTimeout(() => {
+                    if ((window as any).jQuery && (window as any).jQuery().select2) {
+                        (window as any).jQuery(`#${selectId}`).select2({
+                            theme: 'bootstrap-5',
+                            width: '100%',
+                            placeholder: '-- Seleccionar --',
+                            allowClear: !field.options?.required
+                        }).on('change', (e: any) => {
+                            e.target.dispatchEvent(new Event('change', { bubbles: true }));
+                        });
+                    }
+                }, 100);
+            }
+
             return html;
         }
 
-        // Select Field
-        if (lowerType === 'select') {
-            const options = field.options?.values || {};
-            let optionsHtml = '<option value="">-- Seleccionar --</option>';
-            const safeValue = value !== null && value !== undefined ? value : '';
-
-            // Handle both object {k:v} and array [{id:k, name:v}] formats if needed
-            // Standardizing on { value: label } object/map
-            if (Array.isArray(options)) {
-                // If simple array of strings/numbers
-                options.forEach((opt: any) => {
-                    const val = typeof opt === 'object' ? opt.id : opt;
-                    const lab = typeof opt === 'object' ? (opt.name || opt.label) : opt;
-                    const selected = String(val) === String(safeValue) ? 'selected' : '';
-                    optionsHtml += `<option value="${val}" ${selected}>${lab}</option>`;
-                });
-            } else {
-                Object.entries(options).forEach(([k, v]) => {
-                    const selected = String(k) === String(safeValue) ? 'selected' : '';
-                    optionsHtml += `<option value="${k}" ${selected}>${v}</option>`;
-                });
-            }
-
-            const selectId = `select-${field.field}-${Math.random().toString(36).substr(2, 9)}`;
-
-            // Post-render init hook
-            setTimeout(() => {
-                if ((window as any).jQuery && (window as any).jQuery().select2) {
-                    (window as any).jQuery(`#${selectId}`).select2({
-                        theme: 'bootstrap-5',
-                        width: '100%',
-                        placeholder: '-- Seleccionar --',
-                        allowClear: !field.options?.required
-                    }).on('change', (e: any) => {
-                        // Trigger native change for dirty checking
-                        e.target.dispatchEvent(new Event('change', { bubbles: true }));
-                    });
-                }
-            }, 100);
-
-            return `
-                <div class="${colClass} mb-3 alxarafe-select2-wrapper">
-                    <label class="form-label small fw-bold text-secondary">${field.label}</label>
-                    <select class="form-select alx-select2" id="${selectId}" name="${field.field}" 
-                        ${field.options?.required ? 'required' : ''} 
-                        ${field.options?.disabled ? 'disabled' : ''}>
-                        ${optionsHtml}
-                    </select>
-                </div>
-            `;
-        }
 
         // Relation List (HasMany)
         if (lowerType === 'relation_list' || lowerType === 'relationlist') {
@@ -1006,24 +994,18 @@ export class AlxarafeResource {
             // Relation Lists default to full width unless specified
             const relColClass = field.options?.col ? `col-md-${field.options.col}` : 'col-12';
 
-            return `
-                <div class="${relColClass} mt-3 mb-3">
-                    <div class="d-flex justify-content-between align-items-center mb-2">
-                        <label class="form-label fw-bold text-secondary mb-0">${field.label}</label>
-                        ${addBtn}
-                    </div>
-                    <div class="card border-0 shadow-sm">
-                        <div class="table-responsive">
-                            <table class="table table-hover mb-0" id="${tableId}">
-                                <thead class="bg-light">
-                                    <tr>${renderHeader()}</tr>
-                                </thead>
-                                <tbody>${renderBody()}</tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            `;
+            if (tpl) {
+                let html = tpl;
+                html = html.split('{{field}}').join(field.field);
+                html = html.split('{{label}}').join(field.label);
+                html = html.split('{{colClass}}').join(relColClass);
+                html = html.split('{{addBtn}}').join(addBtn);
+                html = html.split('{{tableId}}').join(tableId);
+                html = html.split('{{relationHeader}}').join(renderHeader());
+                html = html.split('{{relationBody}}').join(renderBody());
+                return html;
+            }
+            }
         }
 
         // Fallback for text

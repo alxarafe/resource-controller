@@ -1,6 +1,6 @@
 {
   "name": "alxarafe-resource-controller",
-  "version": "1.0.0",
+  "version": "0.2.0",
   "description": "Frontend assets for resource-controller",
   "scripts": {
     "watch": "npm install && webpack --watch --mode development",
