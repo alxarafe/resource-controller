@@ -27,8 +27,7 @@ Este paquete es el núcleo del ecosistema Alxarafe Resource. Úsalo con los adap
 |---|---|---|
 | **[resource-controller](https://github.com/alxarafe/resource-controller)** | Motor CRUD central + componentes UI | ✅ Estable |
 | **[resource-eloquent](https://github.com/alxarafe/resource-eloquent)** | Adaptador ORM Eloquent (Repository, Query, Transaction) | ✅ Estable |
-| **[resource-blade](https://github.com/alxarafe/resource-blade)** | Adaptador de renderizado con Blade | 🚧 Próximamente |
-| **[resource-twig](https://github.com/alxarafe/resource-twig)** | Adaptador de renderizado con Twig | 🚧 Próximamente |
+| **[resource-pdo](https://github.com/alxarafe/resource-pdo)** | Adaptador PDO genérico (Repository, Query, Transaction) | ✅ Estable |
 
 ## Instalación
 
@@ -41,14 +40,9 @@ Para soporte con Eloquent:
 composer require alxarafe/resource-eloquent
 ```
 
-Para renderizado con Blade:
+Para soporte con PDO:
 ```bash
-composer require alxarafe/resource-blade
-```
-
-Para renderizado con Twig:
-```bash
-composer require alxarafe/resource-twig
+composer require alxarafe/resource-pdo
 ```
 
 ## Inicio rápido
@@ -120,10 +114,10 @@ class ProductController extends AbstractResourceController
 │  RendererContract                             │
 └──────────────────────────────────────────────┘
          ↓ implementado por ↓
-┌──────────────┐ ┌──────────────┐ ┌────────────┐
-│ Eloquent     │ │ Blade        │ │ Twig       │
-│ Adapter      │ │ Adapter      │ │ Adapter    │
-└──────────────┘ └──────────────┘ └────────────┘
+┌──────────────┐ ┌──────────────┐
+│ Eloquent     │ │ PDO          │
+│ Adapter      │ │ Adapter      │
+└──────────────┘ └──────────────┘
 ```
 
 ## Contratos

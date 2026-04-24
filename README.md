@@ -27,8 +27,7 @@ This package is the core of the Alxarafe Resource ecosystem. Use it with the ada
 |---|---|---|
 | **[resource-controller](https://github.com/alxarafe/resource-controller)** | Core CRUD engine + UI components | ✅ Stable |
 | **[resource-eloquent](https://github.com/alxarafe/resource-eloquent)** | Eloquent ORM adapter (Repository, Query, Transaction) | ✅ Stable |
-| **[resource-blade](https://github.com/alxarafe/resource-blade)** | Blade template renderer adapter | 🚧 Coming soon |
-| **[resource-twig](https://github.com/alxarafe/resource-twig)** | Twig template renderer adapter | 🚧 Coming soon |
+| **[resource-pdo](https://github.com/alxarafe/resource-pdo)** | Generic PDO adapter (Repository, Query, Transaction) | ✅ Stable |
 
 ## Installation
 
@@ -41,14 +40,9 @@ For Eloquent support:
 composer require alxarafe/resource-eloquent
 ```
 
-For Blade rendering:
+For PDO support:
 ```bash
-composer require alxarafe/resource-blade
-```
-
-For Twig rendering:
-```bash
-composer require alxarafe/resource-twig
+composer require alxarafe/resource-pdo
 ```
 
 ## Quick Start
@@ -120,10 +114,10 @@ class ProductController extends AbstractResourceController
 │  RendererContract                             │
 └──────────────────────────────────────────────┘
          ↓ implemented by ↓
-┌──────────────┐ ┌──────────────┐ ┌────────────┐
-│ Eloquent     │ │ Blade        │ │ Twig       │
-│ Adapter      │ │ Adapter      │ │ Adapter    │
-└──────────────┘ └──────────────┘ └────────────┘
+┌──────────────┐ ┌──────────────┐
+│ Eloquent     │ │ PDO          │
+│ Adapter      │ │ Adapter      │
+└──────────────┘ └──────────────┘
 ```
 
 ## Contracts
