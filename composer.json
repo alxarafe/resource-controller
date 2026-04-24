@@ -1,7 +1,6 @@
 {
   "name": "alxarafe/resource-controller",
   "description": "ORM-agnostic declarative CRUD controller for PHP. Auto-generates list/edit UIs from field metadata.",
-  "version": "0.2.0",
   "type": "library",
   "license": "GPL-3.0-or-later",
   "keywords": ["crud", "admin", "resource", "controller", "scaffolding", "erp", "orm-agnostic"],
