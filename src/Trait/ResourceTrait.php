@@ -490,6 +490,8 @@ trait ResourceTrait
                     if (is_array($tabData) && isset($tabData['fields'])) {
                         $tabsConfig[$key] = [
                             'label' => $tabData['label'] ?? ucfirst($key),
+                            'icon' => $tabData['icon'] ?? null,
+                            'badge' => $tabData['badge'] ?? null,
                             'fields' => $tabData['fields'],
                         ];
                     }
@@ -503,7 +505,12 @@ trait ResourceTrait
             if (isset($visibility[$sectionId]) && !call_user_func($visibility[$sectionId])) {
                 continue;
             }
-            $this->addEditSection($sectionId, $sectionData['label']);
+            $this->addEditSection(
+                $sectionId, 
+                $sectionData['label'], 
+                $sectionData['icon'] ?? null, 
+                $sectionData['badge'] ?? null
+            );
 
             $sectionFields = array_values(array_filter($sectionData['fields'], function ($f) {
                 return !($f instanceof AbstractField) || $f->isVisible();
@@ -591,9 +598,14 @@ trait ResourceTrait
         }
     }
 
-    protected function addEditSection(string $id, string $title): void
+    protected function addEditSection(string $id, string $title, ?string $icon = null, ?int $badge = null): void
     {
-        $this->structConfig['edit']['sections'][$id] = ['title' => $title, 'fields' => []];
+        $this->structConfig['edit']['sections'][$id] = [
+            'title' => $title, 
+            'icon' => $icon,
+            'badge' => $badge,
+            'fields' => []
+        ];
     }
 
     protected function addEditField(string $sectionId, AbstractField|string $fieldOrObject, string $label = '', string $type = 'text', array $options = []): void
@@ -627,8 +639,8 @@ trait ResourceTrait
                 $this->addListColumn($tabId, $value);
                 continue;
             }
-            $field = is_string($key) ? $key : (string) $value;
             $options = is_array($value) ? $value : [];
+            $field = is_string($key) ? $key : ($options['field'] ?? (string) $value);
             $meta = $metadata[$field] ?? [];
             if (empty($options['label'])) $options['label'] = $meta['label'] ?? ucfirst($field);
             if (empty($options['type'])) $options['type'] = $meta['genericType'] ?? 'text';
@@ -652,8 +664,8 @@ trait ResourceTrait
                 $this->addEditField($sectionId, $value);
                 continue;
             }
-            $field = is_string($key) ? $key : $value;
             $options = is_array($value) ? $value : [];
+            $field = is_string($key) ? $key : ($options['field'] ?? (string) $value);
             $this->addEditField($sectionId, $field, $options['label'] ?? ucfirst($field), $options['type'] ?? 'text', $options);
         }
     }

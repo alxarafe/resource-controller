@@ -715,10 +715,15 @@ export class AlxarafeResource {
         let navHtml = '<ul class="nav nav-tabs mb-3" role="tablist">';
         entries.forEach(([secId, sec]: [string, any], index) => {
             const activeClass = index === 0 ? 'active' : '';
+            const iconHtml = sec.icon ? `<i class="${sec.icon} me-1"></i> ` : '';
+            const badgeHtml = (sec.badge !== undefined && sec.badge !== null) 
+                ? `<span class="badge bg-danger ms-1">${sec.badge}</span>` 
+                : '';
+                
             navHtml += `
                 <li class="nav-item" role="presentation">
                     <button class="nav-link ${activeClass}" id="${secId}-tab" data-bs-toggle="tab" data-bs-target="#tab-${secId}" type="button" role="tab">
-                        ${sec.title}
+                        ${iconHtml}${sec.title}${badgeHtml}
                     </button>
                 </li>
             `;
@@ -877,9 +882,11 @@ export class AlxarafeResource {
                 }, 100);
             }
 
-            return html;
+            // If it's a relation list, we need to process it further below
+            if (lowerType !== 'relation_list' && lowerType !== 'relationlist') {
+                return html;
+            }
         }
-
 
         // Relation List (HasMany)
         if (lowerType === 'relation_list' || lowerType === 'relationlist') {
@@ -1002,11 +1009,31 @@ export class AlxarafeResource {
                 html = html.split('{{addBtn}}').join(addBtn);
                 html = html.split('{{tableId}}').join(tableId);
                 html = html.split('{{relationHeader}}').join(renderHeader());
-                html = html.split('{{relationBody}}').join(renderBody());
                 return html;
             }
-            }
+
+            // Fallback for relation list if no template
+            return `
+                <div class="${relColClass} mt-3 mb-3">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <label class="form-label fw-bold text-secondary mb-0">${field.label}</label>
+                        ${addBtn}
+                    </div>
+                    <div class="card border-0 shadow-sm">
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0" id="${tableId}">
+                                <thead class="bg-light">
+                                    <tr>${renderHeader()}</tr>
+                                </thead>
+                                <tbody>${renderBody()}</tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            `;
         }
+
+        if (html) return html;
 
         // Fallback for text
         return `
