@@ -534,6 +534,12 @@ trait ResourceTrait
                 $options['maxlength'] = (int) $fieldData['length'];
             }
 
+            foreach (['min', 'max', 'step', 'precision', 'scale', 'unsigned'] as $key) {
+                if (isset($fieldData[$key])) {
+                    $options[$key] = $fieldData[$key];
+                }
+            }
+
             $components[] = match ($type) {
                 'boolean'  => new Fields\Boolean($field, $label, $options),
                 'date'     => new Fields\Date($field, $label, $options),
