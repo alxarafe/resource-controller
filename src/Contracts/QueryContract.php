@@ -74,4 +74,12 @@ interface QueryContract
      * @param callable(QueryContract): void $callback
      */
     public function whereGroup(callable $callback): static;
+
+    /**
+     * Apply a raw SQL condition.
+     *
+     * @param string $sql
+     * @param array $params
+     */
+    public function whereRaw(string $sql, array $params = []): static;
 }
